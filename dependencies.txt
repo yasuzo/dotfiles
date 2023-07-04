@@ -1,0 +1,2 @@
+ripgrep
+packer.nvim
