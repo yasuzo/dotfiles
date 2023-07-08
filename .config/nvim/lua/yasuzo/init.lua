@@ -1,3 +1,3 @@
-require("yasuzo.remap")
 require("yasuzo.packer")
-
+require("yasuzo.set")
+require("yasuzo.remap")
