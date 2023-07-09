@@ -42,14 +42,18 @@ return require('packer').startup(function(use)
     }
 
     use({
-        "Pocco81/auto-save.nvim",
+        "okuuva/auto-save.nvim",
         config = function()
             require("auto-save").setup {
-                -- your config goes here
-                -- or just leave it empty :)
-                trigger_events = {"TextChangedI", "TextChanged"}
+                trigger_events = {
+                    immediate_save = { "BufLeave", "FocusLost", "InsertLeave", "TextChanged" },
+                    defer_save = { "CursorHoldI" }, -- vim events that trigger a deferred save (saves after `debounce_delay`)
+                    cancel_defered_save = { "TextChangedI" }
+                },
+                debounce_delay = 1350 -- saves the file at most every `debounce_delay` milliseconds
             }
         end,
     })
-end)
 
+    use 'm4xshen/autoclose.nvim'
+end)
