@@ -8,6 +8,7 @@ lsp.ensure_installed({
     "eslint",
     "lua_ls",
     "gopls",
+    "terraformls"
 })
 
 lsp.on_attach(function(client, bufnr)
