@@ -8,7 +8,8 @@ lsp.ensure_installed({
     "eslint",
     "lua_ls",
     "gopls",
-    "terraformls"
+    "terraformls",
+    "tflint"
 })
 
 lsp.on_attach(function(client, bufnr)
@@ -48,3 +49,6 @@ lspconfig.lua_ls.setup {
         }
     }
 }
+
+lspconfig.terraformls.setup {}
+lspconfig.tflint.setup {}
