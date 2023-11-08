@@ -1,3 +1,5 @@
 ripgrep
+tflint
+terraform-ls
 packer.nvim
 xclip
