@@ -8,11 +8,12 @@ lsp.ensure_installed({
     "eslint",
     "lua_ls",
     "gopls",
+    "terraformls",
+    "tflint"
 })
 
 lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
-
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
@@ -47,3 +48,18 @@ lspconfig.lua_ls.setup {
         }
     }
 }
+
+lsp.setup('terraformls', {
+    cmd = {'terraform-ls', 'serve'},
+    filetypes = {'hcl', 'tf', 'tfvars', 'tfstate'},
+    on_attach = lsp.on_attach,
+    capabilities = lsp.capabilities,
+})
+
+-- Configure TFLint
+lsp.setup('tflint', {
+    cmd = {'tflint', '--langserver'},
+    filetypes = {'hcl', 'tf', 'tfvars', 'tfstate'},
+    on_attach = lsp.on_attach,
+    capabilities = lsp.capabilities,
+})
