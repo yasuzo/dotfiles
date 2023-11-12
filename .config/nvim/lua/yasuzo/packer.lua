@@ -15,6 +15,7 @@ return require('packer').startup(function(use)
 
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use('mbbill/undotree')
+    use('folke/trouble.nvim')
     use {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v2.x',

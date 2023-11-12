@@ -3,3 +3,4 @@ tflint
 terraform-ls
 packer.nvim
 xclip
+python-lsp-server[all]
