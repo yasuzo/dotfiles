@@ -63,4 +63,4 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 -- search and replace
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
-vim.keymap.set("n", "<leader>xx", "<cmd>Trouble workspace_diagnostics<CR>")
+vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle workspace_diagnostics<CR>")
