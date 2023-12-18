@@ -10,7 +10,9 @@ lsp.ensure_installed({
     "gopls",
     "terraformls",
     "tflint",
-    "pylsp"
+    "pyright",
+    "pylsp",
+    "yamlls"
 })
 
 lsp.on_attach(function(client, bufnr)
@@ -50,33 +52,24 @@ lspconfig.lua_ls.setup {
     }
 }
 
-lsp.setup('pylsp', {
-    cmd = { 'pylsp' },
-    filetypes = { 'py' },
-    on_attach = lsp.on_attach,
-    capabilities = lsp.capabilities,
-    root_dir = './'
-})
+lspconfig.yamlls.setup {
+    settings = {
+        yaml = {
+            schemas = {
+                ["https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json"] = {"*.yaml", "*.yml"}
+            }
+        }
+    }
+}
 
-lsp.setup('tsserver', {
-    cmd = { 'tsserver' },
-    filetypes = { 'ts' },
-    on_attach = lsp.on_attach,
-    capabilities = lsp.capabilities,
-    root_dir = './'
-})
+lspconfig.pylsp.setup {}
 
-lsp.setup('terraformls', {
-    cmd = { 'terraform-ls', 'serve' },
-    filetypes = { 'hcl', 'tf', 'tfvars', 'tfstate' },
-    on_attach = lsp.on_attach,
-    capabilities = lsp.capabilities,
-})
+lspconfig.tsserver.setup {}
 
--- Configure TFLint
-lsp.setup('tflint', {
-    cmd = { 'tflint', '--langserver' },
-    filetypes = { 'hcl', 'tf', 'tfvars', 'tfstate' },
-    on_attach = lsp.on_attach,
-    capabilities = lsp.capabilities,
-})
+lspconfig.terraformls.setup {}
+
+lspconfig.tflint.setup {}
+
+lspconfig.gopls.setup {
+
+}

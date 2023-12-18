@@ -3,6 +3,9 @@ local telescope = require("telescope")
 
 telescope.setup {
     extensions = {
+        recent_files = {
+            only_cwd = true,
+        },
         file_browser = {
             -- path
             -- cwd
@@ -65,4 +68,5 @@ telescope.setup {
 }
 
 telescope.load_extension "file_browser"
+telescope.load_extension "recent_files"
 
