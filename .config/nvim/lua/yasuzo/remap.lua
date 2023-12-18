@@ -13,12 +13,22 @@ vim.keymap.set("n", "<leader>pv",
     ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
     { noremap = true })
 
+vim.keymap.set("n", "<Leader><Leader>",
+  [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
+  {noremap = true, silent = true})
+
 vim.keymap.set('n', '<leader>ff',
     function() builtin.find_files({ find_command = { 'rg', '--glob', '!.git/', '--files', '--hidden' } }) end, {})
 vim.keymap.set('n', '<leader>pf', builtin.git_files, {})
 vim.keymap.set('n', '<leader>ps', function()
     builtin.grep_string({ search = vim.fn.input("Grep > "), additional_args = { '--glob', '!.git/', '--hidden' } });
 end)
+
+-- surround
+vim.keymap.set("v", "\"", "c\"<Esc>pa\"<Esc>")
+vim.keymap.set("v", "(", "c(<Esc>pa)<Esc>")
+vim.keymap.set("v", "{", "c{<Esc>pa}<Esc>")
+vim.keymap.set("v", "[", "c[<Esc>pa]<Esc>")
 
 -- move  lines up/down
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
