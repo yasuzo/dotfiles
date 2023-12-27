@@ -12,7 +12,8 @@ lsp.ensure_installed({
     "tflint",
     "pyright",
     "pylsp",
-    "yamlls"
+    "yamlls",
+    "jqls"
 })
 
 lsp.on_attach(function(client, bufnr)
