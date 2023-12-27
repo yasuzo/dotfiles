@@ -10,8 +10,7 @@ lsp.ensure_installed({
     "gopls",
     "terraformls",
     "tflint",
-    "pyright",
-    "pylsp",
+    "pylyzer",
     "yamlls",
 })
 
