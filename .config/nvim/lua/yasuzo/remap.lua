@@ -13,9 +13,9 @@ vim.keymap.set("n", "<leader>pv",
     ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
     { noremap = true })
 
-vim.keymap.set("n", "<Leader><Leader>",
-  [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
-  {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>o",
+    [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
+    { noremap = true, silent = true })
 
 vim.keymap.set('n', '<leader>ff',
     function() builtin.find_files({ find_command = { 'rg', '--glob', '!.git/', '--files', '--hidden' } }) end, {})
