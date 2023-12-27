@@ -49,9 +49,8 @@ return require('packer').startup(function(use)
         config = function()
             require("auto-save").setup {
                 trigger_events = {
-                    immediate_save = { "BufLeave", "FocusLost", "InsertLeave", "TextChanged" },
-                    defer_save = { "CursorHoldI" }, -- vim events that trigger a deferred save (saves after `debounce_delay`)
-                    cancel_defered_save = { "TextChangedI" }
+                    immediate_save = { "BufLeave", "FocusLost", "InsertLeave", "TextChanged", "CursorHoldI"},
+                --    cancel_defered_save = { "TextChangedI" }
                 },
                 debounce_delay = 1350 -- saves the file at most every `debounce_delay` milliseconds
             }
