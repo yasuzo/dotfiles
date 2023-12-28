@@ -10,7 +10,7 @@ lsp.ensure_installed({
     "gopls",
     "terraformls",
     "tflint",
-    "pylyzer",
+    "ruff_lsp",
     "yamlls",
 })
 
@@ -61,7 +61,7 @@ lspconfig.yamlls.setup {
     }
 }
 
-lspconfig.pylyzer.setup {}
+lspconfig.ruff_lsp.setup {}
 
 lspconfig.tsserver.setup {}
 
