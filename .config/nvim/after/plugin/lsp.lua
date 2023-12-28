@@ -11,6 +11,7 @@ lsp.ensure_installed({
     "terraformls",
     "tflint",
     "ruff_lsp",
+    "pyright",
     "yamlls",
 })
 
@@ -55,13 +56,33 @@ lspconfig.yamlls.setup {
     settings = {
         yaml = {
             schemas = {
-                ["https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json"] = {"*.yaml", "*.yml"}
+                ["https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json"] = { "*.yaml", "*.yml" }
             }
         }
     }
 }
 
-lspconfig.ruff_lsp.setup {}
+lspconfig.ruff_lsp.setup {
+    on_attach = function(client, _) client.server_capabilities.hoverProvider = false end
+}
+lspconfig.pyright.setup {
+    capabilities = (function()
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+        return capabilities
+    end)(),
+    settings = {
+        python = {
+            analysis = {
+                useLibraryCodeForTypes = true,
+                diagnosticSeverityOverrides = {
+                    reportUnusedVariable = "warning", -- or anything
+                },
+                typeCheckingMode = "basic",
+            },
+        },
+    },
+}
 
 lspconfig.tsserver.setup {}
 
