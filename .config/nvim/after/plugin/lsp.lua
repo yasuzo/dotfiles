@@ -84,7 +84,20 @@ lspconfig.pyright.setup {
     },
 }
 
-lspconfig.tsserver.setup {}
+lspconfig.eslint.setup {
+    on_attach = function(client, _)
+        vim.notify(client.name)
+        client.server_capabilities.documentFormattingProvider = true
+    end
+}
+
+lspconfig.tsserver.setup {
+    on_attach = function(client, _)
+        if client.name == "tsserver" then
+            client.server_capabilities.documentFormattingProvider = false -- 0.8 and later
+        end
+    end
+}
 
 lspconfig.terraformls.setup {}
 
