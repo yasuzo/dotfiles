@@ -1,3 +1,3 @@
-require("yasuzo.packer")
+require("yasuzo.lazy")
 require("yasuzo.set")
 require("yasuzo.remap")

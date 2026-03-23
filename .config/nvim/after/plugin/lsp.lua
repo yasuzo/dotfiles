@@ -1,58 +1,71 @@
-local lsp = require("lsp-zero")
-local lspconfig = require("lspconfig")
-
-lsp.preset("recommended")
-
-lsp.ensure_installed({
-    "tsserver",
-    "eslint",
-    "lua_ls",
-    "gopls",
-    "terraformls",
-    "tflint",
-    "ruff_lsp",
-    "pyright",
-    "yamlls",
+-- Setup Mason
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = {
+        "ts_ls",
+        "eslint",
+        "lua_ls",
+        "gopls",
+        "terraformls",
+        "tflint",
+        "ruff",
+        "pyright",
+        "yamlls",
+        "svelte",
+    },
 })
 
-lsp.on_attach(function(client, bufnr)
+-- Setup nvim-cmp capabilities
+local cmp_lsp = require("cmp_nvim_lsp")
+local capabilities = vim.tbl_deep_extend(
+    "force",
+    {},
+    vim.lsp.protocol.make_client_capabilities(),
+    cmp_lsp.default_capabilities()
+)
+
+-- LSP keybindings on attach
+local on_attach = function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+    vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = 1 }) end, opts)
+    vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = -1 }) end, opts)
     vim.keymap.set("n", "<leader>e", function() vim.lsp.buf.code_action() end, opts)
     vim.keymap.set("n", "<leader>rr", function() vim.lsp.buf.references() end, opts)
     vim.keymap.set("n", "<leader>r", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-end)
+end
 
-lsp.setup()
-
+-- Diagnostic configuration
 vim.diagnostic.config({
     virtual_text = true
 })
 
-lspconfig.lua_ls.setup {
+-- Default LSP config
+local default_config = {
+    capabilities = capabilities,
+    on_attach = on_attach,
+}
+
+-- Lua LSP
+vim.lsp.config.lua_ls = vim.tbl_deep_extend("force", default_config, {
     settings = {
         Lua = {
             workspace = {
-                -- Make the server aware of Neovim runtime files
                 library = vim.api.nvim_get_runtime_file("", true),
             },
             diagnostics = {
-                globals = {
-                    "vim",
-                    "require"
-                }
+                globals = { "vim", "require" }
             }
         }
     }
-}
+})
 
-lspconfig.yamlls.setup {
+-- YAML LSP
+vim.lsp.config.yamlls = vim.tbl_deep_extend("force", default_config, {
     settings = {
         yaml = {
             schemas = {
@@ -60,49 +73,64 @@ lspconfig.yamlls.setup {
             }
         }
     }
-}
+})
 
-lspconfig.ruff_lsp.setup {
-    on_attach = function(client, _) client.server_capabilities.hoverProvider = false end
-}
-lspconfig.pyright.setup {
+-- Python LSP (Ruff)
+vim.lsp.config.ruff = vim.tbl_deep_extend("force", default_config, {
+    on_attach = function(client, bufnr)
+        client.server_capabilities.hoverProvider = false
+        on_attach(client, bufnr)
+    end,
+})
+
+-- Python LSP (Pyright)
+vim.lsp.config.pyright = vim.tbl_deep_extend("force", default_config, {
     capabilities = (function()
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
-        return capabilities
+        local caps = vim.tbl_deep_extend("force", capabilities, {})
+        caps.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+        return caps
     end)(),
     settings = {
         python = {
             analysis = {
                 useLibraryCodeForTypes = true,
                 diagnosticSeverityOverrides = {
-                    reportUnusedVariable = "warning", -- or anything
+                    reportUnusedVariable = "warning",
                 },
                 typeCheckingMode = "basic",
             },
         },
     },
-}
+})
 
-lspconfig.eslint.setup {
-    on_attach = function(client, _)
+-- ESLint
+vim.lsp.config.eslint = vim.tbl_deep_extend("force", default_config, {
+    on_attach = function(client, bufnr)
         vim.notify(client.name)
         client.server_capabilities.documentFormattingProvider = true
-    end
-}
+        on_attach(client, bufnr)
+    end,
+})
 
-lspconfig.tsserver.setup {
-    on_attach = function(client, _)
-        if client.name == "tsserver" then
-            client.server_capabilities.documentFormattingProvider = false -- 0.8 and later
+-- TypeScript
+vim.lsp.config.ts_ls = vim.tbl_deep_extend("force", default_config, {
+    on_attach = function(client, bufnr)
+        if client.name == "ts_ls" then
+            client.server_capabilities.documentFormattingProvider = false
         end
-    end
-}
+        on_attach(client, bufnr)
+    end,
+})
 
-lspconfig.terraformls.setup {}
+-- Terraform
+vim.lsp.config.terraformls = default_config
+vim.lsp.config.tflint = default_config
 
-lspconfig.tflint.setup {}
+-- Go
+vim.lsp.config.gopls = default_config
 
-lspconfig.gopls.setup {
+-- Svelte
+vim.lsp.config.svelte = default_config
 
-}
+-- Enable the LSP servers
+vim.lsp.enable({ "lua_ls", "yamlls", "ruff", "pyright", "eslint", "ts_ls", "terraformls", "tflint", "gopls", "svelte" })
