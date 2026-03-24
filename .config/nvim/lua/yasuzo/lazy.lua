@@ -26,20 +26,8 @@ require("lazy").setup({
 
     {
         'nvim-treesitter/nvim-treesitter',
+        lazy = false,
         build = ':TSUpdate',
-        config = function()
-            require('nvim-treesitter.configs').setup {
-                ensure_installed = { "typescript", "go", "python", "toml", "yaml", "json", "c", "lua", "vim", "vimdoc", "query", "terraform", "svelte" },
-                sync_install = false,
-                ignore_install = {},
-                modules = {},
-                auto_install = true,
-                highlight = {
-                    enable = true,
-                    additional_vim_regex_highlighting = false,
-                },
-            }
-        end,
     },
 
     'mbbill/undotree',
