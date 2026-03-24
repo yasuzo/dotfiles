@@ -1,3 +1,6 @@
+-- Add treesitter parser directory to runtimepath
+vim.opt.runtimepath:append(vim.fn.stdpath("data") .. "/site")
+
 -- Setup treesitter (optional, using defaults)
 require('nvim-treesitter').setup {
 }
