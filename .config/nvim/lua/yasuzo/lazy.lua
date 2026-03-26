@@ -31,7 +31,12 @@ require("lazy").setup({
     },
 
     'mbbill/undotree',
-    'folke/trouble.nvim',
+
+    {
+        "folke/trouble.nvim",
+        opts = {},
+        cmd = "Trouble",
+    },
 
     -- LSP Support
     {
