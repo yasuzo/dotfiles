@@ -37,6 +37,9 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 -- move line below to the end of current line
 vim.keymap.set("n", "J", "mzJ`z")
 
+-- cursor switch windows
+vim.keymap.set("n", "<Tab>", "<C-w>w")
+
 -- go down/up half screen
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")

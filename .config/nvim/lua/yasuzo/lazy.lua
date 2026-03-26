@@ -77,7 +77,7 @@ require("lazy").setup({
             require("auto-save").setup {
                 trigger_events = {
                     immediate_save = { "BufLeave", "FocusLost" },
-                    defer_save = { "InsertLeave" },
+                    defer_save = { "InsertLeave", "CursorHold" },
                     cancel_deferred_save = { "InsertEnter" }
                 },
                 debounce_delay = 500
